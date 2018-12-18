@@ -21,3 +21,13 @@ def upload(context, module=0):
               f'--upload {SKETCH_PATH}/module{module}/module{module}.ino '
               f'--port {ARDUINO_PORT}')
     print(run(command))
+
+@task
+def installRosDep(context):
+    BASE = 'ros-melodic-'
+    ros_packages = ['joy']
+    packages = ''
+    for package in ros_packages:
+        packages += f'{BASE}{package} '
+    command = f'sudo apt install {packages}'
+    print(run(command))
