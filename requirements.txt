@@ -1,0 +1,2 @@
+pyserial==3.4
+invoke==1.2.0
