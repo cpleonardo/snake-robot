@@ -1,11 +1,11 @@
  <launch>
-   <!--node pkg="server" type="server" name="server.py" output="screen"/-->
-
    <!-- joy node -->
    <node respawn="true" pkg="joy" type="joy_node" name="joy">
      <param name="dev" type="string" value="/dev/input/js0" />
-     <param name="deadzone" value="0.12" />
+     <param name="deadzone" value="0.15" />
    </node>
+   <node pkg="snake_joint_state_publisher" type="joint_inc_publisher.py" name="snake_joint_inc_publisher" output="screen"/>
+   <node pkg="snake_joint_state_publisher" type="joint_state_publisher.py" name="snake_joint_state_publisher" output="screen"/>
+   <node pkg="snake_server" type="server.py" name="snake_server" output="screen"/>
 
-   <node pkg="joint_publisher" type="joint_state_publisher.py" name="joint_state_publisher" output="screen"/>
  </launch>
