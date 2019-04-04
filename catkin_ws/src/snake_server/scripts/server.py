@@ -2,6 +2,7 @@
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 from snake_msgs.msg import ArrayModule, Module
 import json, threading, sys, rospy
+from urlparse import urlparse, parse_qs
 
 
 PORT_NUMBER = 6666
@@ -21,21 +22,21 @@ def start_node():
 
 class SnakeRequestHandler(BaseHTTPRequestHandler):
 
-	# Handler for the POST requests
-    def do_POST(self):
+	# Handler for the GET requests
+    def do_GET(self):
         self.send_response(200)
         self.send_header('Content-type', 'application/json')
         self.end_headers()
-        content_len = int(self.headers.getheader('content-length', 0))
-        request_crud_data = self.rfile.read(content_len)
-        request_data = json.loads(request_crud_data)
+        query_components = parse_qs(urlparse(self.path).query)
+        module = int(query_components["module"][0])
         global joints_states
-        module_data = joints_states.ArrayModule[request_data['module'] - 1]
+        module_data = joints_states.ArrayModule[module - 1]
         response = {
             "speed": module_data.speed,
             "pitch": module_data.pitch,
-            "yaw": module_data.yaw
+            "yaw": module_data.yaw,
         }
+        print(response)
         self.wfile.write(json.dumps(response))
         return
 
