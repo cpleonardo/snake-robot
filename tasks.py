@@ -6,11 +6,11 @@ This task compiles an arduino sketch file (*.ino) and uploads to
 the Arduino in the given port.
 '''
 @task
-def upload(context, module=0):
+def upload(context, module=0, device='USB0'):
     modules = range(1,7)
     ARDUINO_PATH = '~/Software/arduino-1.8.7/'
     SKETCH_PATH = '~/snake_robot/Arduino/'
-    ARDUINO_PORT = '/dev/ttyUSB0'
+    ARDUINO_PORT = f'/dev/tty{device}'
     if not module:
         print(colored('Module number(1-7) must be specified', 'red'))
         return
