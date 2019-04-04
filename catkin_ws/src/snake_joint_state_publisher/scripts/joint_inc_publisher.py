@@ -16,27 +16,32 @@ class JointIncPublisher():
         self.MAX_SPEED = 255
         self.YAW_MULTIPLAYER = 1
         self.PITCH_MULTIPLAYER = 1
+        self.YAW_AXIS = 0
+        self.PITCH_AXIS = 1
+        self.SPEED_AXIS = 3
 
     def joyCallback(self, data):
-        right_trigger_value = data.axes[5]
+        # right_trigger_value = data.axes[5]
+        right_trigger_value = data.axes[self.SPEED_AXIS]
         left_button = data.buttons[4]
         rigth_button = data.buttons[5]
-        self.module.yaw = data.axes[3] * self.YAW_MULTIPLAYER
-        self.module.pitch = data.axes[4] * self.PITCH_MULTIPLAYER
+        self.module.yaw = data.axes[self.YAW_AXIS] * self.YAW_MULTIPLAYER
+        self.module.pitch = data.axes[self.PITCH_AXIS] * self.PITCH_MULTIPLAYER
         if rigth_button or left_button:
             if rigth_button and self.module.selected != 7:
                 self.module.selected += 1
             if left_button and self.module.selected != 1:
                 self.module.selected -= 1
-        if right_trigger_value != 1.0:
-            self.module.speed = int(
-                (1 - right_trigger_value) / 2 * self.MAX_SPEED)
-        print(json.dumps({
-            "speed": self.module.speed,
-            "pitch": self.module.pitch,
-            "yaw": self.module.yaw,
-            "active_module": self.module.selected
-        }, indent=4))
+        # if right_trigger_value != 1.0:
+        #     self.module.speed = int(
+        #         (1 - right_trigger_value) / 2 * self.MAX_SPEED)
+        self.module.speed = right_trigger_value * self.MAX_SPEED
+        # print(json.dumps({
+        #     "speed": self.module.speed,
+        #     "pitch": self.module.pitch,
+        #     "yaw": self.module.yaw,
+        #     "active_module": self.module.selected
+        # }, indent=4))
 
     def start_node(self):
         rospy.Subscriber("joy", Joy, self.joyCallback)

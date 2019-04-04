@@ -13,30 +13,33 @@ class SnakeJointStatePublisher():
         self.MAX_PITCH = 90
         self.MIN_YAW = -90
         self.MAX_YAW = 90
+        self.ANGULAR_MUTIPLIER = 255
 
     def moduleCallback(self, module):
         for data in self.joints_states.ArrayModule:
             data.speed = module.speed
-        pitch = self.joints_states.ArrayModule[module.selected - 1].pitch
-        pitch += module.pitch
-        if pitch > self.MAX_PITCH:
-            pitch = self.MAX_PITCH
-        elif pitch < self.MIN_PITCH:
-            pitch = self.MIN_PITCH
-        self.joints_states.ArrayModule[module.selected - 1].pitch = pitch
-        yaw = self.joints_states.ArrayModule[module.selected - 1].yaw
-        yaw += module.yaw
-        if yaw > self.MAX_YAW:
-            yaw = self.MAX_YAW
-        elif yaw < self.MIN_YAW:
-            yaw = self.MIN_YAW
-        self.joints_states.ArrayModule[module.selected - 1].yaw = yaw
-        print(json.dumps({
-            "speed": self.joints_states.ArrayModule[module.selected - 1].speed,
-            "pitch": self.joints_states.ArrayModule[module.selected - 1].pitch,
-            "yaw": self.joints_states.ArrayModule[module.selected - 1].yaw,
-            "active_module": module.selected,
-        }, indent=4))
+            data.yaw = module.yaw * self.ANGULAR_MUTIPLIER
+            data.pitch = module.pitch * self.ANGULAR_MUTIPLIER
+        # pitch = self.joints_states.ArrayModule[module.selected - 1].pitch
+        # pitch += module.pitch
+        # if pitch > self.MAX_PITCH:
+        #     pitch = self.MAX_PITCH
+        # elif pitch < self.MIN_PITCH:
+        #     pitch = self.MIN_PITCH
+        # self.joints_states.ArrayModule[module.selected - 1].pitch = pitch
+        # yaw = self.joints_states.ArrayModule[module.selected - 1].yaw
+        # yaw += module.yaw
+        # if yaw > self.MAX_YAW:
+        #     yaw = self.MAX_YAW
+        # elif yaw < self.MIN_YAW:
+        #     yaw = self.MIN_YAW
+        # self.joints_states.ArrayModule[module.selected - 1].yaw = yaw
+        # print(json.dumps({
+        #     "speed": self.joints_states.ArrayModule[module.selected - 1].speed,
+        #     "pitch": self.joints_states.ArrayModule[module.selected - 1].pitch,
+        #     "yaw": self.joints_states.ArrayModule[module.selected - 1].yaw,
+        #     "active_module": module.selected,
+        # }, indent=4))
 
     def start_node(self):
         rospy.Subscriber("snake_joint_inc", Module, self.moduleCallback)
