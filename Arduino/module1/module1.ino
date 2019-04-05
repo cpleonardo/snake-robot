@@ -7,13 +7,13 @@
 WiFiMulti wifiMulti;
 
 // Wifi name and password
-// const char* SSID = "Connectify-me";
-// const char* PASSWORD = "hola1234";
-const char* SSID = "INFINITUM689C_2.4";
-const char* PASSWORD = "9rUK2YTmQX";
+const char* SSID = "Connectify-me";
+const char* PASSWORD = "hola1234";
+// const char* SSID = "INFINITUM689C_2.4";
+// const char* PASSWORD = "9rUK2YTmQX";
 
 // Server IP and query params
-const String HOST = "http://192.168.1.136";
+const String HOST = "http://192.168.4.102";
 const String PORT = "6666";
 const String MODULE = "/?module=1";
 
@@ -31,6 +31,11 @@ const uint8_t YAW_DIR_1 = 23;
 const uint8_t YAW_DIR_2 = 18;
 const uint8_t YAW_PWM_CHANNEL = 2;
 
+// PITCH PINS
+const uint8_t PITCH_PWM_PIN = 2;
+const uint8_t PITCH_DIR = 4;
+const uint8_t PITCH_PWM_CHANNEL = 3;
+
 void setup() {
   // SPEED
   ledcAttachPin(SPEED_PWM_PIN, SPEED_PWM_CHANNEL);
@@ -43,6 +48,11 @@ void setup() {
   ledcSetup(YAW_PWM_CHANNEL, 12000, 8); // 12 kHz PWM, 8-bit resolution
   pinMode(YAW_DIR_1, OUTPUT);
   pinMode(YAW_DIR_2, OUTPUT);
+
+  // PITCH
+  ledcAttachPin(PITCH_PWM_PIN, PITCH_PWM_CHANNEL);
+  ledcSetup(PITCH_PWM_CHANNEL, 12000, 8); // 12 kHz PWM, 8-bit resolution
+  pinMode(PITCH_DIR, OUTPUT);
 
   Serial.begin(115200);
   Serial.println();
@@ -61,6 +71,8 @@ void setup() {
 void loop() {
   // wait for WiFi connection
   if(wifiMulti.run() != WL_CONNECTED) {
+    Serial.println("Wifi connection failed");
+    stop_motors();
     return;
   }
   HTTPClient http;
@@ -72,6 +84,7 @@ void loop() {
     Serial.print("[HTTP] GET... failed, error: ");
     Serial.println(http.errorToString(httpCode).c_str());
     http.end();
+    stop_motors();
     return;
   }
 
@@ -84,6 +97,7 @@ void loop() {
     float pitch = response_msg["pitch"];
     write_pwm_speed(speed);
     write_pwm_yaw(yaw);
+    write_pwm_pitch(pitch);
   }
   else {
     Serial.println("parseObject() failed");
@@ -108,4 +122,18 @@ void write_pwm_yaw(float pwm) {
   digitalWrite(YAW_DIR_1, dir);
   digitalWrite(YAW_DIR_2, !dir);
   Serial.println(abs(pwm));
+}
+
+void write_pwm_pitch(float pwm) {
+  bool dir = pwm > 1 ? LOW : HIGH;
+  Serial.println(dir);
+  ledcWrite(PITCH_PWM_CHANNEL, abs(pwm));
+  digitalWrite(PITCH_DIR, dir);
+  Serial.println(abs(pwm));
+}
+
+void stop_motors() {
+  ledcWrite(SPEED_PWM_CHANNEL, 0);
+  ledcWrite(PITCH_PWM_CHANNEL, 0);
+  ledcWrite(YAW_PWM_CHANNEL, 0);
 }
