@@ -16,9 +16,9 @@ class JointIncPublisher():
         self.MAX_SPEED = 255
         self.YAW_MULTIPLAYER = 1
         self.PITCH_MULTIPLAYER = 1
-        self.YAW_AXIS = 0
-        self.PITCH_AXIS = 1
-        self.SPEED_AXIS = 3
+        self.YAW_AXIS = 3
+        self.PITCH_AXIS = 4
+        self.SPEED_AXIS = 1
 
     def joyCallback(self, data):
         # right_trigger_value = data.axes[5]
