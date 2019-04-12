@@ -7,15 +7,15 @@
 WiFiMulti wifiMulti;
 
 // Wifi name and password
-const char* SSID = "Connectify-me";
-const char* PASSWORD = "hola1234";
-// const char* SSID = "INFINITUM689C_2.4";
-// const char* PASSWORD = "9rUK2YTmQX";
+const char* SSID = "TP-LINK_A158";
+const char* PASSWORD = "80999805";
 
 // Server IP and query params
-const String HOST = "http://192.168.4.102";
+// const String HOST = "http://192.168.4.102";
+const String HOST = "http://192.168.0.108";
 const String PORT = "6666";
-const String MODULE = "/?module=1";
+const String MOD_ID = "5";
+const String MODULE = "/?module=" + MOD_ID;
 
 // ESP32 PIN config
 
@@ -103,7 +103,7 @@ void loop() {
     Serial.println("parseObject() failed");
   }
   http.end();
-  delay(1);
+  delay(10);
 }
 
 void write_pwm_speed(float pwm) {
