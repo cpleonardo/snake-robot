@@ -21,3 +21,10 @@ Make sure to physically connect to the right module before upload.
 ```
   (env)$ ➜ inv upload --module=1
 ```
+
+### Launch Snake Robot ROS Nodes
+In order to launch snake robot ROS nodes, python virtual environment must be deactivated or execute commands in other terminal.
+```
+  (env)$ ➜ deactivate
+  $ ➜ roslaunch bring_up snake_robot.launch
+```
