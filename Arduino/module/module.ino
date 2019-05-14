@@ -14,7 +14,7 @@ const char* PASSWORD = "80999805";
 // const String HOST = "http://192.168.4.102";
 const String HOST = "http://192.168.0.108";
 const String PORT = "6666";
-const String MOD_ID = "5";
+const String MOD_ID = "7";
 const String MODULE = "/?module=" + MOD_ID;
 
 // ESP32 PIN config
@@ -109,26 +109,26 @@ void loop() {
 void write_pwm_speed(float pwm) {
   bool dir = pwm > 1 ? LOW : HIGH;
   Serial.println(dir);
-  ledcWrite(SPEED_PWM_CHANNEL, abs(pwm));
   digitalWrite(SPEED_DIR_1, dir);
   digitalWrite(SPEED_DIR_2, !dir);
+  ledcWrite(SPEED_PWM_CHANNEL, abs(pwm));
   Serial.println(abs(pwm));
 }
 
 void write_pwm_yaw(float pwm) {
   bool dir = pwm > 1 ? LOW : HIGH;
   Serial.println(dir);
-  ledcWrite(YAW_PWM_CHANNEL, abs(pwm));
   digitalWrite(YAW_DIR_1, dir);
   digitalWrite(YAW_DIR_2, !dir);
+  ledcWrite(YAW_PWM_CHANNEL, abs(pwm));
   Serial.println(abs(pwm));
 }
 
 void write_pwm_pitch(float pwm) {
   bool dir = pwm > 1 ? LOW : HIGH;
   Serial.println(dir);
-  ledcWrite(PITCH_PWM_CHANNEL, abs(pwm));
   digitalWrite(PITCH_DIR, dir);
+  ledcWrite(PITCH_PWM_CHANNEL, abs(pwm));
   Serial.println(abs(pwm));
 }
 
