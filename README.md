@@ -34,4 +34,4 @@ In order to launch snake robot ROS nodes, python virtual environment must be dea
 ```
 
 ### Collaborate!
-If you're interested in collaborate on this project, feel free to send an invitation to the Trello development board: https://trello.com/b/kSHrthf3/snakerobot.
+If you're interested in collaborate on this project, feel free to send a request to the Trello development board: https://trello.com/b/kSHrthf3/snakerobot.
