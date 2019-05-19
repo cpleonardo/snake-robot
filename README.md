@@ -5,7 +5,7 @@
 * [ROS Melodic Morenia](http://wiki.ros.org/melodic/)
 * Python 3
 * Pip
-* Virtualenv
+* [Virtualenv >16.1.0](https://virtualenv.pypa.io/en/latest/)
 
 ### Automatic using `Invoke`
 You must first install or verify that your computer has installed `python3`, `pip` and `virtualenv`.
