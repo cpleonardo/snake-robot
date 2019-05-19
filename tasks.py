@@ -7,7 +7,7 @@ the Arduino in the given port.
 '''
 @task
 def upload(context, module=1, device='USB0'):
-    modules = range(1,7)
+    modules = range(1,8)
     ARDUINO_PATH = '~/Software/arduino-1.8.7/'
     SKETCH_PATH = 'Arduino/module/module.ino'
     ARDUINO_PORT = f'/dev/tty{device}'
