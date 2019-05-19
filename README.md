@@ -16,7 +16,7 @@ You must first install or verify that your computer has installed `python3`, `pi
  (env)$ ➜ pip install -r requirements.txt
 ```
 
-### Upload an sketch to a specific snake robot module (e.g. module 1)
+### Upload a sketch to a specific snake robot module (e.g. module 1)
 Make sure to physically connect to the right module before upload.
 ```
   (env)$ ➜ inv upload --module=1
