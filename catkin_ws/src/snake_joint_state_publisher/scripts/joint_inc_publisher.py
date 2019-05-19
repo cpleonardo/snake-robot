@@ -16,11 +16,11 @@ class JointIncPublisher():
         self.MAX_SPEED = 255
         self.YAW_MULTIPLAYER = 1
         self.PITCH_MULTIPLAYER = 1
-        self.YAW_AXIS = 3
-        self.PITCH_AXIS = 4
+        self.YAW_AXIS = 4
+        self.PITCH_AXIS = 3
         self.SPEED_AXIS = 1
 
-    def joyCallback(self, data):
+    def joy_callback(self, data):
         # right_trigger_value = data.axes[5]
         right_trigger_value = data.axes[self.SPEED_AXIS]
         left_button = data.buttons[4]
@@ -44,7 +44,7 @@ class JointIncPublisher():
         # }, indent=4))
 
     def start_node(self):
-        rospy.Subscriber("joy", Joy, self.joyCallback)
+        rospy.Subscriber("joy", Joy, self.joy_callback)
         module_publisher = rospy.Publisher('snake_joint_inc',
                                            Module,
                                            queue_size=10)
