@@ -42,7 +42,7 @@ if __name__ == '__main__':
         thread = threading.Thread(target = server.serve_forever)
         thread.daemon = True
         thread.start()
-        print('Started httpserver on port ' , PORT_NUMBER)
+        print('Started httpserver on port ' , SnakeRequestHandler.PORT_NUMBER)
         SnakeRequestHandler.start_node()
         print('Started snake_joint_state_listener ros node')
         rospy.spin()
