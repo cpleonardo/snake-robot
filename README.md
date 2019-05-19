@@ -30,6 +30,7 @@ Make sure to physically connect to the right module before upload.
 In order to launch snake robot ROS nodes, python virtual environment must be deactivated or execute commands in other terminal.
 ```
   (env)$ ➜ deactivate
+  $ ➜ ./install_ros_pkgs.sh #Install ROS required pkgs
   $ ➜ roslaunch bring_up snake_robot.launch
 ```
 
