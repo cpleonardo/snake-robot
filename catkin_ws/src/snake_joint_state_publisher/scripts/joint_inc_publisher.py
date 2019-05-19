@@ -59,5 +59,6 @@ if __name__ == '__main__':
     try:
         joint_inc_pub = JointIncPublisher()
         joint_inc_pub.start_node()
+        print("Started 'snake_joint_inc' node")
     except rospy.ROSInterruptException:
         pass
