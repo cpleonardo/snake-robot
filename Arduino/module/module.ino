@@ -4,6 +4,12 @@
 #include <HTTPClient.h>
 #include <ArduinoJson.h>
 
+#if CONFIG_FREERTOS_UNICORE
+#define ARDUINO_RUNNING_CORE 0
+#else
+#define ARDUINO_RUNNING_CORE 1
+#endif
+
 WiFiMulti wifiMulti;
 
 // Wifi name and password
@@ -36,6 +42,9 @@ const uint8_t PITCH_PWM_PIN = 2;
 const uint8_t PITCH_DIR = 4;
 const uint8_t PITCH_PWM_CHANNEL = 3;
 
+// Time variable for checking last comm
+unsigned long last_comm;
+
 void setup() {
   // SPEED
   ledcAttachPin(SPEED_PWM_PIN, SPEED_PWM_CHANNEL);
@@ -56,22 +65,30 @@ void setup() {
 
   Serial.begin(115200);
   Serial.println();
-  Serial.println();
-  Serial.println();
 
   for(uint8_t t = 4; t > 0; t--) {
     Serial.print("[SETUP] WAIT ");
     Serial.println(t);
     Serial.flush();
-    delay(1000);
+    delay(500);
   }
   wifiMulti.addAP(SSID, PASSWORD);
+
+  // Set up tasks to run independently.
+  xTaskCreatePinnedToCore(
+    checkIfCommFailed,
+    "check_if_comm_failed", // A name just for humans
+    1024, // This stack size can be checked & adjusted by reading the Stack Highwater
+    NULL,
+    2, // Priority, with 3 (configMAX_PRIORITIES - 1) being the highest, and 0 being the lowest.
+    NULL,
+    ARDUINO_RUNNING_CORE);
 }
 
 void loop() {
   // wait for WiFi connection
   if(wifiMulti.run() != WL_CONNECTED) {
-    Serial.println("Wifi connection failed");
+    Serial.println("WiFi connection failed");
     stop_motors();
     return;
   }
@@ -103,6 +120,7 @@ void loop() {
     Serial.println("parseObject() failed");
   }
   http.end();
+  last_comm = millis();
   delay(10);
 }
 
@@ -136,4 +154,12 @@ void stop_motors() {
   ledcWrite(SPEED_PWM_CHANNEL, 0);
   ledcWrite(PITCH_PWM_CHANNEL, 0);
   ledcWrite(YAW_PWM_CHANNEL, 0);
+}
+
+void checkIfCommFailed(void *pvParameters){
+  if (millis() - last_comm > 1000){
+    Serial.println("WiFi Communication failed. Stopping motors");
+    stop_motors();
+  }
+  vTaskDelay(1000);
 }
