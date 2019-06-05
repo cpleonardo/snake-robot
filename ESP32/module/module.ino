@@ -14,7 +14,7 @@ const char* PASSWORD = "80999805";
 // const String HOST = "http://192.168.4.102";
 const String HOST = "http://192.168.0.108";
 const String PORT = "6666";
-const String MOD_ID = "7";
+const String MOD_ID = "1";
 const String MODULE = "/?module=" + MOD_ID;
 
 // ESP32 PIN config

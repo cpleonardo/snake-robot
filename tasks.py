@@ -9,7 +9,7 @@ the Arduino in the given port.
 def upload(context, module=1, device='USB0'):
     modules = range(1,8)
     ARDUINO_PATH = '~/Software/arduino-1.8.7/'
-    SKETCH_PATH = 'Arduino/module/module.ino'
+    SKETCH_PATH = 'ESP32/module/module.ino'
     ARDUINO_PORT = f'/dev/tty{device}'
     if not module:
         print(colored('Module number (1-7) must be specified', 'red'))
